@@ -1,0 +1,243 @@
+:root {
+  --bg: #070b16;
+  --panel: #111c34;
+  --ink: #d9e4ff;
+  --tube: #ffb74d;
+  --tube-shadow: rgba(255, 183, 77, 0.35);
+  --wire: #476180;
+  --active: #8bff9e;
+  --gate: #234f74;
+  --gate-active: #35c173;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 20% 10%, #1b2e53, var(--bg) 45%);
+}
+
+.app-shell {
+  width: min(1100px, 95vw);
+  margin: 1.5rem auto 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  background: linear-gradient(160deg, rgba(28, 42, 76, 0.9), rgba(12, 20, 38, 0.95));
+  border: 1px solid rgba(186, 215, 255, 0.2);
+  border-radius: 18px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+.hero h1 {
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.hero p {
+  margin-bottom: 0;
+  opacity: 0.9;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+.input-cluster {
+  display: grid;
+  gap: 0.4rem;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  border: 1px solid #5f7db4;
+  background: #0a1327;
+  color: #e6eeff;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 0.5rem 0.6rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+button.go {
+  background: linear-gradient(120deg, #3cff8f, #15a85a);
+  color: #00140a;
+}
+
+button.ghost {
+  background: #1e2f50;
+  color: #dce8ff;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ticker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.tube-display {
+  margin-top: 0.3rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(255, 193, 107, 0.55);
+  border-radius: 9px;
+  background: linear-gradient(180deg, rgba(32, 22, 8, 0.9), rgba(7, 6, 4, 0.92));
+  color: var(--tube);
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.14em;
+  text-shadow: 0 0 8px var(--tube-shadow), 0 0 14px var(--tube-shadow);
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.tube-display.large {
+  min-height: 2.3rem;
+  font-size: 1.2rem;
+}
+
+.tube-display.roll {
+  transform: translateY(-4px);
+  opacity: 0.9;
+}
+
+.stage {
+  min-height: 430px;
+  overflow: hidden;
+  position: relative;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(1.1);
+  transition: opacity 600ms ease, transform 900ms ease;
+  pointer-events: none;
+}
+
+.scene.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.chip-icon {
+  width: min(350px, 70vw);
+  aspect-ratio: 1.4;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #202f5f, #0f1733);
+  border: 3px solid #7398e8;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.chip-core {
+  width: 58%;
+  height: 52%;
+  border: 2px solid #9ec5ff;
+  display: grid;
+  place-items: center;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  letter-spacing: 0.18em;
+}
+
+.pin {
+  position: absolute;
+  background: #a7c4f6;
+}
+
+.pin.left,
+.pin.right {
+  width: 20px;
+  height: 90px;
+  top: calc(50% - 45px);
+}
+
+.pin.left {
+  left: -20px;
+}
+
+.pin.right {
+  right: -20px;
+}
+
+.pin.top,
+.pin.bottom {
+  width: 90px;
+  height: 20px;
+  left: calc(50% - 45px);
+}
+
+.pin.top {
+  top: -20px;
+}
+
+.pin.bottom {
+  bottom: -20px;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+.wire {
+  stroke: var(--wire);
+  stroke-width: 5;
+  fill: none;
+  transition: stroke 240ms ease, filter 240ms ease;
+}
+
+.gate {
+  fill: color-mix(in srgb, var(--gate), #0d2139 35%);
+  stroke: #6aa2d4;
+  stroke-width: 3;
+  transition: fill 240ms ease, stroke 240ms ease, filter 240ms ease;
+}
+
+.wire.active {
+  stroke: var(--active);
+  filter: url(#glow);
+}
+
+.gate.active {
+  fill: var(--gate-active);
+  stroke: #b8ffd0;
+  filter: url(#glow);
+}
+
+text {
+  fill: #dce9ff;
+  font-size: 15px;
+  font-family: "Segoe UI", sans-serif;
+}
